@@ -2,6 +2,11 @@ grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 
+grails.project.repos.default = "artifactory"
+grails.project.repos.artifactory.url = "http://repo.wangler.io/repo"
+grails.project.repos.artifactory.type = "maven"
+grails.project.repos.artifactory.portal = "artifactory"
+
 grails.project.fork = [
     // configure settings for compilation JVM, note that if you alter the Groovy version forked compilation is required
     //  compile: [maxMemory: 256, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
@@ -26,11 +31,7 @@ grails.project.dependency.resolution = {
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
         grailsCentral()
-        mavenLocal()
-        mavenCentral()
-        // uncomment the below to enable remote dependency resolution
-        // from public Maven repositories
-        //mavenRepo "http://repository.codehaus.org"
+        mavenRepo "http://repo.wangler.io/repo"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
     }

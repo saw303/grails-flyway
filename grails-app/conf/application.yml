@@ -1,0 +1,18 @@
+grails:
+    profile: plugin
+    codegen:
+        defaultPackage: grails.flyway
+info:
+    app:
+        name: '@info.app.name@'
+        version: '@info.app.version@'
+        grailsVersion: '@info.app.grailsVersion@'
+spring:
+    groovy:
+        template:
+            check-template-location: false
+
+flyway:
+    enabled: true
+    locations: src/main
+    baselineOnMigrate: true

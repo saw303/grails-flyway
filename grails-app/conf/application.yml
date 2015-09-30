@@ -1,7 +1,7 @@
 grails:
     profile: plugin
     codegen:
-        defaultPackage: grails.flyway
+        defaultPackage: ch.silviowangler.grails.flyway
 info:
     app:
         name: '@info.app.name@'

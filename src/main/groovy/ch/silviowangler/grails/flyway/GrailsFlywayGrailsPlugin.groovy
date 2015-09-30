@@ -1,4 +1,4 @@
-package grails.flyway
+package ch.silviowangler.grails.flyway
 
 import grails.plugins.*
 import org.flywaydb.core.Flyway

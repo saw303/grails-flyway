@@ -16,7 +16,7 @@ plugins {
     id "com.jfrog.bintray" version "1.2"
 }
 
-version "0.1-SNAPSHOT"
+version "0.1"
 group "org.grails.plugins"
 
 apply plugin: 'maven-publish'
@@ -59,4 +59,17 @@ dependencies {
 
 task wrapper(type: Wrapper) {
     gradleVersion = gradleWrapperVersion
+}
+
+bintray {
+    pkg {
+        userOrg = '' // If you want to publish to an organization
+        name = "$project.group:$project.name"
+        issueTrackerUrl = "https://github.com/saw303/grails-flyway/issues"
+        vcsUrl = "https://github.com/saw303/grails-flyway.git"
+        version {
+            attributes = ['grails-plugin': "$project.group:$project.name"]
+            name = project.version
+        }
+    }
 }

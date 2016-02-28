@@ -1,7 +1,8 @@
 package ch.silviowangler.grails.flyway
 
-import grails.plugins.*
+import grails.plugins.Plugin
 import org.flywaydb.core.Flyway
+import org.springframework.beans.factory.config.BeanDefinition
 
 class GrailsFlywayGrailsPlugin extends Plugin {
 
@@ -31,23 +32,29 @@ Database migrations using Flyway 3
 
     def loadAfter = ['hibernate']
 
-    Closure doWithSpring = {
+    Closure doWithSpring() {
+        { ->
+            if (application.config.flyway.enabled) {
 
-        if (application.config.flyway.enabled) {
+                flyway(Flyway) { bean ->
+                    bean.initMethod = 'migrate'
+                    dataSource = ref('dataSource')
+                    locations = application.config.flyway.locations
+                    baselineOnMigrate = application.config.flyway.baselineOnMigrate
+                }
 
-            flyway(Flyway) { bean ->
-                bean.initMethod = 'migrate'
-                dataSource = ref('dataSource')
-                locations = application.config.flyway.locations
-                baselineOnMigrate = application.config.flyway.baselineOnMigrate
+                BeanDefinition sessionFactoryBeanDef = getBeanDefinition('sessionFactory')
+
+                if (sessionFactoryBeanDef) {
+                    def dependsOnList = ['flyway'] as Set
+                    if (sessionFactoryBeanDef.dependsOn?.length > 0) {
+                        dependsOnList.addAll(sessionFactoryBeanDef.dependsOn)
+                    }
+                    sessionFactoryBeanDef.dependsOn = dependsOnList as String[]
+                }
             }
-
-            def sessionFactoryBeanDef = getBeanDefinition('sessionFactory')
-
-            if (sessionFactoryBeanDef) {
-                def dependsOnList = ['flyway']
-                if (sessionFactoryBeanDef.dependsOn?.length > 0) dependsOnList.addAll(sessionFactoryBeanDef.dependsOn)
-                sessionFactoryBeanDef.dependsOn = dependsOnList as String[]
+            else {
+                log.info "Grails Flyway plugin has been disabled"
             }
         }
     }

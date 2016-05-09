@@ -37,7 +37,7 @@ targetCompatibility = 1.7
 
 repositories {
     mavenLocal()
-    mavenCentral()
+    jcenter()
     maven { url "https://repo.grails.org/grails/core" }
 }
 
@@ -54,7 +54,7 @@ dependencies {
     testCompile "org.grails:grails-plugin-testing"
     console "org.grails:grails-console"
 
-    compile 'org.flywaydb:flyway-core:3.2.1'
+    compile 'org.flywaydb:flyway-core:4.0.1'
 }
 
 task wrapper(type: Wrapper) {

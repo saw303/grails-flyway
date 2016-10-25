@@ -8,21 +8,13 @@ buildscript {
     }
 }
 
-plugins {
-    id "io.spring.dependency-management" version "0.5.2.RELEASE"
-    id "com.jfrog.bintray" version "1.2"
-}
-
-version "0.2.1"
+version "0.2.2"
 group "org.grails.plugins"
 
-apply plugin: 'maven-publish'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: "org.grails.grails-plugin"
-// Used for publishing to central repository, remove if not needed
-apply from:'https://raw.githubusercontent.com/grails/grails-profile-repository/master/profiles/plugin/templates/grailsCentralPublishing.gradle'
-apply from:'https://raw.githubusercontent.com/grails/grails-profile-repository/master/profiles/plugin/templates/bintrayPublishing.gradle'
+apply plugin:"eclipse"
+apply plugin:"idea"
+apply plugin:"org.grails.grails-plugin"
+apply plugin:"org.grails.grails-plugin-publish"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -41,27 +33,29 @@ dependencyManagement {
 }
 
 dependencies {
-    provided "org.grails:grails-core"
-    provided "org.grails.plugins:hibernate"
-    testCompile "org.grails:grails-plugin-testing"
+    compile "org.springframework.boot:spring-boot-starter-logging"
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    compile "org.grails:grails-core"
     console "org.grails:grails-console"
+    profile "org.grails.profiles:plugin:3.1.6"
+    provided "org.grails:grails-plugin-services"
+    provided "org.grails:grails-plugin-domain-class"
+    testCompile "org.grails:grails-plugin-testing"
 
-    compile 'org.flywaydb:flyway-core:4.0.1'
+    compile 'org.flywaydb:flyway-core:4.0.3'
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = gradleWrapperVersion
 }
 
-bintray {
-    pkg {
-        userOrg = '' // If you want to publish to an organization
-        name = "$project.group:$project.name"
-        issueTrackerUrl = "https://github.com/saw303/grails-flyway/issues"
-        vcsUrl = "https://github.com/saw303/grails-flyway.git"
-        version {
-            attributes = ['grails-plugin': "$project.group:$project.name"]
-            name = project.version
-        }
+grailsPublish {
+    repo = 'plugins'
+    githubSlug = 'saw303/grails-flyway'
+    license {
+        name = 'Apache-2.0'
     }
+    title = "Grails Flyway Plugin"
+    desc = "Flyway Plugin for Grails 3.0"
+    developers = [saw303:"Silvio Wangler"]
 }

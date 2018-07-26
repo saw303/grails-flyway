@@ -24,10 +24,14 @@ class GrailsFlywayGrailsPlugin extends Plugin {
 
                 flyway(Flyway) { bean ->
                     bean.initMethod = 'migrate'
+
+                    application.config.flyway.each {k, v ->
+                        if(!"enabled".equalsIgnoreCase(k)) {
+                            flyway."${k}" = v
+                        }
+                    }
+
                     dataSource = ref('dataSource')
-                    locations = application.config.flyway.locations
-                    baselineOnMigrate = application.config.flyway.baselineOnMigrate
-                    schemas = application.config.flyway.schemas
                 }
 
                 BeanDefinition sessionFactoryBeanDef = getBeanDefinition('sessionFactory')

@@ -27,6 +27,7 @@ class GrailsFlywayGrailsPlugin extends Plugin {
                     dataSource = ref('dataSource')
                     locations = application.config.flyway.locations
                     baselineOnMigrate = application.config.flyway.baselineOnMigrate
+                    schemas = application.config.flyway.schemas
                 }
 
                 BeanDefinition sessionFactoryBeanDef = getBeanDefinition('sessionFactory')
